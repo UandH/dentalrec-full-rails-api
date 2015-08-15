@@ -1,3 +1,5 @@
+require 'api_constraints'
+
 Rails.application.routes.draw do
 
   namespace :api, defaults: { formatb: :json }, constraints: { subdomain: 'api' }, path: '/' do
