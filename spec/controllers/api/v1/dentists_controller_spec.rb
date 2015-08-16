@@ -10,7 +10,7 @@ RSpec.describe Api::V1::DentistsController, type: :controller do
     end
 
     it 'checks the received dentists email' do
-      dentist_response = JSON.parse(response.body, symbolize_names: true)
+      dentist_response = json_response
       expect(dentist_response[:email]).to eql @dentist.email
     end
 
@@ -28,7 +28,7 @@ RSpec.describe Api::V1::DentistsController, type: :controller do
       end
 
       it 'renders the json representation for the dentist record just created' do
-        dentist_response = JSON.parse(response.body, symbolize_names: true)
+        dentist_response = json_response
         expect(dentist_response[:email]).to eql @dentist_attributes[:email]
       end
 
@@ -44,12 +44,12 @@ RSpec.describe Api::V1::DentistsController, type: :controller do
       end
 
       it 'renders an errors json' do
-        dentist_response = JSON.parse(response.body, symbolize_names: true)
+        dentist_response = json_response
         expect(dentist_response).to have_key(:errors)
       end
 
-      it 'renders the json errors on why the dentist could not be created' do
-        dentist_response = JSON.parse(response.body, symbolize_names: true)
+      it 'renders the json errors and why the dentist could not be created' do
+        dentist_response = json_response
         expect(dentist_response[:errors][:email]).to include "can't be blank"
       end
 
@@ -67,7 +67,7 @@ RSpec.describe Api::V1::DentistsController, type: :controller do
       end
 
       it 'renders the json representation for the updated dentist' do
-        dentist_response = JSON.parse(response.body, symbolize_names: true)
+        dentist_response = json_response
         expect(dentist_response[:email]).to eql 'newmail@example.com'
       end
 
@@ -82,12 +82,12 @@ RSpec.describe Api::V1::DentistsController, type: :controller do
       end
 
       it 'renders an errors json' do
-        dentist_response = JSON.parse(response.body, symbolize_names: true)
+        dentist_response = json_response
         expect(dentist_response).to have_key(:errors)
       end
 
       it 'renders the json errors why the dentist could not be created' do
-        dentist_response = JSON.parse(response.body, symbolize_names: true)
+        dentist_response = json_response
         expect(dentist_response[:errors][:email]).to include 'is invalid'
       end
 
