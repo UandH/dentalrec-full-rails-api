@@ -9,11 +9,13 @@ RSpec.describe Api::V1::DentistsController, type: :controller do
       get :show, id: @dentist.id, format: :json
     end
 
-    it 'returns the information about a reporter on a hash' do
+    it 'checks the received dentists email' do
       dentist_response = JSON.parse(response.body, symbolize_names: true)
       expect(dentist_response[:email]).to eql @dentist.email
     end
 
-    it { should respond_with 200 }
+    it 'response should be 200' do
+      expect(response.status).to eq(200)
+    end
   end
 end
