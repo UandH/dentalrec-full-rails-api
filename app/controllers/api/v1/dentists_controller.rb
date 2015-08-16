@@ -4,4 +4,19 @@ class Api::V1::DentistsController < ApplicationController
   def show
     respond_with Dentist.find(params[:id])
   end
+
+  def create
+    dentist = Dentist.new(dentist_params)
+    if dentist.save
+      render json: dentist, status: 201, location: [:api, dentist]
+    else
+      render json: {errors: dentist.errors}, status: 422
+    end
+  end
+
+  private
+
+  def dentist_params
+    params.require(:dentist).permit(:email, :password, :password_confirmation)
+  end
 end
