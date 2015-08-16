@@ -14,6 +14,16 @@ class Api::V1::DentistsController < ApplicationController
     end
   end
 
+  def update
+    dentist = Dentist.find(params[:id])
+
+    if dentist.update(dentist_params)
+      render json: dentist, status: 200, location: [:api, dentist]
+    else
+      render json: {errors: dentist.errors}, status: 422
+    end
+  end
+
   private
 
   def dentist_params
