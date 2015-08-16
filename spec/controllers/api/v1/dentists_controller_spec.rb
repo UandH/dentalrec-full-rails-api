@@ -83,7 +83,7 @@ RSpec.describe Api::V1::DentistsController, type: :controller do
 
       it 'renders an errors json' do
         dentist_response = JSON.parse(response.body, symbolize_names: true)
-        expect( dentist_response).to have_key(:errors)
+        expect(dentist_response).to have_key(:errors)
       end
 
       it 'renders the json errors why the dentist could not be created' do
@@ -93,5 +93,14 @@ RSpec.describe Api::V1::DentistsController, type: :controller do
 
       it { should respond_with 422 }
     end
+  end
+
+  describe 'DELETE #destroy' do
+    before(:each) do
+      @dentist = FactoryGirl.create :dentist
+      delete :destroy, {id: @dentist.id}, format: :json
+    end
+
+    it { should respond_with 204 }
   end
 end

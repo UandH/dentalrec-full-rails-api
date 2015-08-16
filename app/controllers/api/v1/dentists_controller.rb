@@ -24,6 +24,12 @@ class Api::V1::DentistsController < ApplicationController
     end
   end
 
+  def destroy
+    dentist = Dentist.find(params[:id])
+    dentist.destroy
+    head 204
+  end
+
   private
 
   def dentist_params
