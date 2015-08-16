@@ -1,12 +1,13 @@
 require 'rails_helper'
 
 RSpec.describe Api::V1::DentistsController, type: :controller do
-  before(:each) { request.headers['Accept'] = 'application/vnd.dentalrec.v1' }
+  before(:each) { request.headers['Accept'] = "application/vnd.dentalrec.v1, #{Mime::JSON}" }
+  before(:each) { request.headers['Content-Type'] = Mime::JSON.to_s }
 
   describe 'GET #show' do
     before(:each) do
       @dentist = FactoryGirl.create :dentist
-      get :show, id: @dentist.id, format: :json
+      get :show, id: @dentist.id
     end
 
     it 'checks the received dentists email' do
@@ -24,7 +25,7 @@ RSpec.describe Api::V1::DentistsController, type: :controller do
     context 'when is successfully created' do
       before(:each) do
         @dentist_attributes = FactoryGirl.attributes_for :dentist
-        post :create, {dentist: @dentist_attributes}, format: :json
+        post :create, {dentist: @dentist_attributes}
       end
 
       it 'renders the json representation for the dentist record just created' do
@@ -40,7 +41,7 @@ RSpec.describe Api::V1::DentistsController, type: :controller do
         #notice I'm not including the email
         @invalid_dentist_attributes = {password: '12345678',
                                        password_confirmation: '12345678'}
-        post :create, {dentist: @invalid_dentist_attributes}, format: :json
+        post :create, {dentist: @invalid_dentist_attributes}
       end
 
       it 'renders an errors json' do
@@ -63,7 +64,7 @@ RSpec.describe Api::V1::DentistsController, type: :controller do
       before(:each) do
         dentist = FactoryGirl.create :dentist
         patch :update, {id: dentist.id,
-                        dentist: {email: 'newmail@example.com'}}, format: :json
+                        dentist: {email: 'newmail@example.com'}}
       end
 
       it 'renders the json representation for the updated dentist' do
@@ -78,7 +79,7 @@ RSpec.describe Api::V1::DentistsController, type: :controller do
       before(:each) do
         dentist = FactoryGirl.create :dentist
         patch :update, {id: dentist.id,
-                        dentist: {email: 'bademail.com'}}, format: :json
+                        dentist: {email: 'bademail.com'}}
       end
 
       it 'renders an errors json' do
@@ -98,7 +99,7 @@ RSpec.describe Api::V1::DentistsController, type: :controller do
   describe 'DELETE #destroy' do
     before(:each) do
       @dentist = FactoryGirl.create :dentist
-      delete :destroy, {id: @dentist.id}, format: :json
+      delete :destroy, {id: @dentist.id}
     end
 
     it { should respond_with 204 }
