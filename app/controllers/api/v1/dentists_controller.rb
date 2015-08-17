@@ -1,4 +1,5 @@
 class Api::V1::DentistsController < ApplicationController
+  before_action :authenticate_with_token!, only: [:update, :destroy]
   respond_to :json
 
   def show
@@ -15,7 +16,7 @@ class Api::V1::DentistsController < ApplicationController
   end
 
   def update
-    dentist = Dentist.find(params[:id])
+    dentist = current_dentist
 
     if dentist.update(dentist_params)
       render json: dentist, status: 200, location: [:api, dentist]
@@ -25,8 +26,7 @@ class Api::V1::DentistsController < ApplicationController
   end
 
   def destroy
-    dentist = Dentist.find(params[:id])
-    dentist.destroy
+    current_dentist.destroy
     head 204
   end
 
