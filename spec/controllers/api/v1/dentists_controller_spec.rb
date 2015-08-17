@@ -57,11 +57,14 @@ RSpec.describe Api::V1::DentistsController, type: :controller do
   end
 
   describe 'PUT/PATCH #update' do
+    before(:each) do
+      @dentist = FactoryGirl.create :dentist
+      api_authorization_header @dentist.auth_token
+    end
 
     context 'when is successfully updated' do
       before(:each) do
-        dentist = FactoryGirl.create :dentist
-        patch :update, {id: dentist.id,
+        patch :update, {id: @dentist.id,
                         dentist: {email: 'newmail@example.com'}}
       end
 
@@ -97,6 +100,7 @@ RSpec.describe Api::V1::DentistsController, type: :controller do
   describe 'DELETE #destroy' do
     before(:each) do
       @dentist = FactoryGirl.create :dentist
+      api_authorization_header @dentist.auth_token
       delete :destroy, {id: @dentist.id}
     end
 
