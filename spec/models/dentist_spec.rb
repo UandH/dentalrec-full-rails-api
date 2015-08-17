@@ -21,15 +21,13 @@ RSpec.describe Dentist, type: :model do
 
   describe '#generate_authentication_token!' do
     it 'generates a unique token' do
-      # Devise.stub(:friendly_token).and_return("auniquetoken123")
-      Devise.stub :friendly_token, 'auniquetoken123' do
-        @dentist.generate_authentication_token!
-        expect(@dentist.auth_token).to eql 'auniquetoken123'
-      end
+      Devise.stub(:friendly_token).and_return("auniquetoken123")
+      @dentist.generate_authentication_token!
+      expect(@dentist.auth_token).to eql 'auniquetoken123'
     end
 
-    it "generates another token when one already has been taken" do
-      existing_dentist = FactoryGirl.create(:dentist, auth_token: "auniquetoken123")
+    it 'generates another token when one already has been taken' do
+      existing_dentist = FactoryGirl.create(:dentist, auth_token: 'auniquetoken123')
       @dentist.generate_authentication_token!
       expect(@dentist.auth_token).not_to eql existing_dentist.auth_token
     end
