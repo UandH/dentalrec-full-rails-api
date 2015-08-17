@@ -5,10 +5,10 @@ module Authenticable
   end
 
   def authenticate_with_token!
-    render json: {errors: 'Not authenticated'}, status: :unauthorized unless current_dentist.present?
+    render json: {errors: 'Not authenticated'}, status: :unauthorized unless dentist_signed_in?
   end
 
-  # def user_signed_in?
-  #   current_user.present?
-  # end
+  def dentist_signed_in?
+    current_dentist.present?
+  end
 end
