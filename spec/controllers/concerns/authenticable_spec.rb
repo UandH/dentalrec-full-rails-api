@@ -12,7 +12,8 @@ describe Authenticable do
     before do
       @dentist = FactoryGirl.create :dentist
       request.headers['Authorization'] = @dentist.auth_token
-      authentication.stub(:request).and_return(request)
+      # authentication.stub(:request).and_return(request)
+      allow(authentication).to receive(:request).and_return(request)
     end
 
     it 'returns the dentist from the authorization header' do
@@ -23,10 +24,14 @@ describe Authenticable do
   describe '#authenticate_with_token' do
     before do
       @dentist = FactoryGirl.create :dentist
-      authentication.stub(:current_dentist).and_return(nil)
-      response.stub(:response_code).and_return(401)
-      response.stub(:body).and_return({'errors' => 'Not authenticated'}.to_json)
-      authentication.stub(:response).and_return(response)
+      # authentication.stub(:current_dentist).and_return(nil)
+      allow(authentication).to receive(:current_dentist).and_return(nil)
+      # response.stub(:response_code).and_return(401)
+      allow(response).to receive(:response_code).and_return(401)
+      # response.stub(:body).and_return({'errors' => 'Not authenticated'}.to_json)
+      allow(response).to receive(:body).and_return({'errors' => 'Not authenticated'}.to_json)
+      # authentication.stub(:response).and_return(response)
+      allow(authentication).to receive(:response).and_return(response)
     end
 
     it 'render a json error message' do
@@ -40,7 +45,8 @@ describe Authenticable do
     context "when there is a dentist on 'session'" do
       before do
         @dentist = FactoryGirl.create :dentist
-        authentication.stub(:current_dentist).and_return(@dentist)
+        # authentication.stub(:current_dentist).and_return(@dentist)
+        allow(authentication).to receive(:current_dentist).and_return(@dentist)
       end
 
       it { should be_dentist_signed_in }
@@ -49,7 +55,8 @@ describe Authenticable do
     context "when there is no dentist on 'session'" do
       before do
         @dentist = FactoryGirl.create :dentist
-        authentication.stub(:current_dentist).and_return(nil)
+        # authentication.stub(:current_dentist).and_return(nil)
+        allow(authentication).to receive(:current_dentist).and_return(nil)
       end
 
       it { should_not be_dentist_signed_in }
