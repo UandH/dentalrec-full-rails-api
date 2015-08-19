@@ -20,6 +20,15 @@ class Api::V1::AppointmentsController < ApplicationController
     end
   end
 
+  def update
+    appointment = current_dentist.appointments.find(params[:id])
+    if appointment.update(appointment_params)
+      render json: appointment, status: 200, location: [:api, appointment]
+    else
+      render json: { errors: appointment }, status: 422
+    end
+  end
+
   private
 
   def appointment_params

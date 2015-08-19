@@ -67,4 +67,45 @@ RSpec.describe Api::V1::AppointmentsController, type: :controller do
       it { should respond_with 422 }
     end
   end
+
+  describe 'PUT/PATCH #update' do
+    before(:each) do
+      @dentist = FactoryGirl.create :dentist
+      @appointment = FactoryGirl.create :appointment, dentist: @dentist
+      api_authorization_header @dentist.auth_token
+    end
+
+    context 'when is successfully updated' do
+      before(:each) do
+        patch :update, { dentist_id: @dentist.id, id: @appointment.id,
+                         appointment: { symptoms: 'Cleaning'} }
+      end
+
+      it 'renders the json representation for the updated dentist' do
+        appointment_response = json_response
+        expect(appointment_response[:symptoms]).to eql 'Cleaning'
+      end
+
+      it { should respond_with 200 }
+    end
+
+    context 'when is not updated' do
+      before(:each) do
+        patch :update, { dentist_id: @dentist.id, id: @appointment.id,
+                         appointment: { symptoms: nil } }
+      end
+
+      it 'renders an errors json' do
+        appointment_response = json_response
+        expect(appointment_response).to have_key(:errors)
+      end
+
+      it 'renders the json errors on why the user could not be created' do
+        appointment_response = json_response
+        expect(appointment_response[:errors][:symptoms]).to eql nil
+      end
+
+      it { should respond_with 422 }
+    end
+  end
 end
