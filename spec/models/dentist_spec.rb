@@ -19,6 +19,23 @@ RSpec.describe Dentist, type: :model do
   # we test the auth_token is unique
   it { should validate_uniqueness_of(:auth_token) }
 
+  it { should have_many (:appointments)}
+
+  describe '#appointments association' do
+    before do
+      @dentist.save
+      3.times { FactoryGirl.create :appointment, dentist: @dentist }
+    end
+
+    it 'destroys the associated products on self destruct' do
+      appointments = @dentist.appointments
+      @dentist.destroy
+      appointments.each do |appointment|
+        expect(Appointment.find(appointment)).to raise_error ActiveRecord::RecordNotFound
+      end
+    end
+  end
+
   describe '#generate_authentication_token!' do
     it 'generates a unique token' do
       # Devise.stub(:friendly_token).and_return("auniquetoken123")

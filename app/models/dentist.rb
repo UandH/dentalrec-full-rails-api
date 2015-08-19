@@ -8,6 +8,8 @@ class Dentist < ActiveRecord::Base
 
   before_create :generate_authentication_token!
 
+  has_many :appointments, dependent: :destroy
+
   def generate_authentication_token!
     begin
       self.auth_token = Devise.friendly_token

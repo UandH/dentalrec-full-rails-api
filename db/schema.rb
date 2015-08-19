@@ -11,7 +11,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150816175121) do
+ActiveRecord::Schema.define(version: 20150819165441) do
+
+  create_table "appointments", force: :cascade do |t|
+    t.datetime "date"
+    t.string   "symptoms"
+    t.integer  "dentist_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "appointments", ["dentist_id"], name: "index_appointments_on_dentist_id"
 
   create_table "dentists", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
