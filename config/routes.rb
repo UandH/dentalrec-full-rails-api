@@ -6,8 +6,11 @@ Rails.application.routes.draw do
   namespace :api, defaults: { formatb: :json }, constraints: { subdomain: 'api' }, path: '/' do
     scope module: :v1,
           constraints: ApiConstraints.new(version: 1, default: true) do
-      resources :dentists, :only => [:show, :create, :update, :destroy]
+      resources :dentists, :only => [:show, :create, :update, :destroy] do
+        resources :appointments, :only => [:create]
+      end
       resources :sessions, :only => [:create, :destroy]
+      resources :appointments, :only => [:show, :index]
     end
   end
 

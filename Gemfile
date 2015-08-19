@@ -54,3 +54,5 @@ end
 gem 'devise'
 
 gem 'shoulda-matchers', group: :test
+
+gem 'rspec-collection_matchers'
