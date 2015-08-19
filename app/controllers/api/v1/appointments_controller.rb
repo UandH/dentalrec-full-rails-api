@@ -1,6 +1,6 @@
 class Api::V1::AppointmentsController < ApplicationController
 
-  before_action :authenticate_with_token!, only: [:create]
+  before_action :authenticate_with_token!, only: [:create, :update, :destroy]
   respond_to :json
 
   def show
@@ -27,6 +27,12 @@ class Api::V1::AppointmentsController < ApplicationController
     else
       render json: { errors: appointment }, status: 422
     end
+  end
+
+  def destroy
+    appointment = current_dentist.appointments.find(params[:id])
+    appointment.destroy
+    head 204
   end
 
   private
