@@ -9,8 +9,13 @@ RSpec.describe Api::V1::DentistsController, type: :controller do
     end
 
     it 'checks the received dentists email' do
-      dentist_response = json_response
+      dentist_response = json_response[:dentist]
       expect(dentist_response[:email]).to eql @dentist.email
+    end
+
+    it "has the appointment ids as an embeded object" do
+      dentist_response = json_response[:dentist]
+      expect(dentist_response[:appointment_ids]).to eql []
     end
 
     it 'response should be 200' do
@@ -27,7 +32,7 @@ RSpec.describe Api::V1::DentistsController, type: :controller do
       end
 
       it 'renders the json representation for the dentist record just created' do
-        dentist_response = json_response
+        dentist_response = json_response[:dentist]
         expect(dentist_response[:email]).to eql @dentist_attributes[:email]
       end
 
@@ -69,7 +74,7 @@ RSpec.describe Api::V1::DentistsController, type: :controller do
       end
 
       it 'renders the json representation for the updated dentist' do
-        dentist_response = json_response
+        dentist_response = json_response[:dentist]
         expect(dentist_response[:email]).to eql 'newmail@example.com'
       end
 

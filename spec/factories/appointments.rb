@@ -1,7 +1,7 @@
 FactoryGirl.define do
   factory :appointment do
-    date '2015-08-19 18:54:41'
-    symptoms 'FFaker::Association.symptoms'
+    date { FFaker::Time.date }
+    symptoms { FFaker::Lorem.paragraph }
     dentist
   end
 end
