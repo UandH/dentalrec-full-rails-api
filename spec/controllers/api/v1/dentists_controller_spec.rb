@@ -15,7 +15,7 @@ RSpec.describe Api::V1::DentistsController, type: :controller do
 
     it "has the appointment ids as an embeded object" do
       dentist_response = json_response[:dentist]
-      expect(dentist_response[:appointment_ids]).to eql []
+      expect(dentist_response[:appointment_ids]).to eql nil
     end
 
     it 'response should be 200' do
