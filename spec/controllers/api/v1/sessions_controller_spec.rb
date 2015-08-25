@@ -14,7 +14,7 @@ RSpec.describe Api::V1::SessionsController, type: :controller do
         post :create, {session: credentials}
       end
 
-      it 'returns the user record corresponding to the given credentials' do
+      it 'returns the dentist record corresponding to the given credentials' do
         @dentist.reload
         expect(json_response[:dentist][:auth_token]).to eql @dentist.auth_token
       end

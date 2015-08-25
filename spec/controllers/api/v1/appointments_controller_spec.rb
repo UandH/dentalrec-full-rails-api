@@ -8,7 +8,7 @@ RSpec.describe Api::V1::AppointmentsController, type: :controller do
     end
 
     it 'returns the single appointment by id' do
-      appointment_response = json_response
+      appointment_response = json_response[:appointment]
       expect(appointment_response[:symptoms]).to eql @appointment.symptoms
     end
 
@@ -39,7 +39,7 @@ RSpec.describe Api::V1::AppointmentsController, type: :controller do
       end
 
       it 'renders the json representation for the product record just created' do
-        appointment_response = json_response
+        appointment_response = json_response[:appointment]
         expect(appointment_response[:symptoms]).to eql @appointment_attributes[:symptoms]
       end
 
@@ -82,7 +82,7 @@ RSpec.describe Api::V1::AppointmentsController, type: :controller do
       end
 
       it 'renders the json representation for the updated dentist' do
-        appointment_response = json_response
+        appointment_response = json_response[:appointment]
         expect(appointment_response[:symptoms]).to eql 'Cleaning'
       end
 
