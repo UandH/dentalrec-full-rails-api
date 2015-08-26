@@ -4,8 +4,7 @@ Rails.application.routes.draw do
 
   devise_for :dentists
   namespace :api, defaults: {format: :json}, constraints: {subdomain: 'api'}, path: '/' do
-    scope module: :v1,
-          constraints: ApiConstraints.new(version: 1, default: true) do
+    scope module: :v1, constraints: ApiConstraints.new(version: 1, default: true) do
       resources :dentists, :only => [:show, :create, :update, :destroy] do
         resources :appointments, :only => [:create, :update, :destroy]
       end

@@ -4,11 +4,12 @@ class Api::V1::AppointmentsController < ApplicationController
   respond_to :json
 
   def show
-    respond_with Appointment.find(params[:id])
+    render json: Appointment.find(params[:id])
   end
 
   def index
-    respond_with Appointment.all
+    appointments = params[:appointment_ids].present? ? Appointment.find(params[:appointment_ids]) : Appointment.all
+    render json: appointments
   end
 
   def create
