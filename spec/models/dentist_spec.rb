@@ -19,7 +19,7 @@ RSpec.describe Dentist, type: :model do
   # we test the auth_token is unique
   it { should validate_uniqueness_of(:auth_token) }
 
-  it { should have_many (:appointments)}
+  it { should have_many (:appointments) }
 
   describe '#appointments association' do
     before do
@@ -50,4 +50,42 @@ RSpec.describe Dentist, type: :model do
       expect(@dentist.auth_token).not_to eql existing_dentist.auth_token
     end
   end
+
+  describe '.filter_by_email' do
+    before(:each) do
+      @dentist1 = FactoryGirl.create :dentist, email: 'dramikas@gmail.com'
+      @dentist2 = FactoryGirl.create :dentist, email: 'ljubabuba@gmail.com'
+      @dentist3 = FactoryGirl.create :dentist, email: 'nele@gyahoo.com'
+      @dentist4 = FactoryGirl.create :dentist, email: 'sele@yahoo.com'
+    end
+
+    context "when email is 'not_exist@gmail.com'" do
+      it 'returns an empty array' do
+        expect(Dentist.filter_by_email('not_exist@gmail.com')).to be_empty
+      end
+    end
+
+    context "when email has 'gmail'" do
+      it 'returns the dentists matching' do
+        expect(Dentist.filter_by_email('gmail').sort).to match_array([@dentist1, @dentist2])
+      end
+    end
+  end
+
+  describe '.search' do
+    before(:each) do
+      @dentist1 = FactoryGirl.create :dentist, email: 'dramikas@gmail.com'
+      @dentist2 = FactoryGirl.create :dentist, email: 'ljubabuba@gmail.com'
+      @dentist3 = FactoryGirl.create :dentist, email: 'nele@gyahoo.com'
+      @dentist4 = FactoryGirl.create :dentist, email: 'sele@yahoo.com'
+    end
+
+    context "when email has 'gmail'" do
+      it 'returns the dentists matching' do
+        search_hash = {email: 'gmail'}
+        expect(Dentist.search(search_hash).sort).to match_array([@dentist1, @dentist2])
+      end
+    end
+  end
+
 end

@@ -8,7 +8,8 @@ class Api::V1::AppointmentsController < ApplicationController
   end
 
   def index
-    appointments = params[:appointment_ids].present? ? Appointment.find(params[:appointment_ids]) : Appointment.all
+    # appointments = params[:appointment_ids].present? ? Appointment.search(params[:appointment_ids]) : Appointment.all
+    appointments = Appointment.search(params)
     render json: appointments
   end
 

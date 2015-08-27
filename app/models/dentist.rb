@@ -15,4 +15,15 @@ class Dentist < ActiveRecord::Base
       self.auth_token = Devise.friendly_token
     end while self.class.exists?(auth_token: auth_token)
   end
+
+  scope :filter_by_email, lambda { |email|
+                          where('lower(email) LIKE ?', "%#{email.downcase}%")
+                        }
+
+  def self.search(params = {})
+    dentists = Dentist.all
+    dentists = dentists.filter_by_email(params[:email]) if params[:email]
+
+    dentists
+  end
 end

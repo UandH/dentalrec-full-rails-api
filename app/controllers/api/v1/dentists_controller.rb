@@ -6,6 +6,10 @@ class Api::V1::DentistsController < ApplicationController
     render json: Dentist.find(params[:id])
   end
 
+  def index
+    render json: Dentist.search(params)
+  end
+
   def create
     dentist = Dentist.new(dentist_params)
     if dentist.save
